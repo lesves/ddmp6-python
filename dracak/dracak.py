@@ -1,5 +1,6 @@
+import pickle
 import random
-from story import stats, story, starts
+from story import inventory, stats, story, starts
 
 
 print("Vždy napiš číslo možnosti, jež zvolena tebou jest.")
@@ -14,7 +15,18 @@ while True:
     
     print(story[place][0])
     for option in range(len(story[place][1])):
-        print(str(option+1) + ".", story[place][1][option][0])
+        option_text = story[place][1][option][0]
+
+        if len(story[place][1][option]) > 3:
+            requirements = story[place][1][option][3]
+
+            if requirements.issubset(inventory):
+                print(str(option+1) + ".", option_text)
+            else:
+                print(str(option+1) + ".", option_text, 
+                    "(nelze zvolit, chybí", requirements.difference(inventory))
+
+        print(str(option+1) + ".", option_text)
 
     text = input()
     if text == "stats":
@@ -49,10 +61,11 @@ while True:
         else:
             print("Získal jsi", change, stat + ".")
 
-    if isinstance(story[place][1][chose][1], str):
-        place = story[place][1][chose][1]
+    next_place = story[place][1][chose][1]
+    if isinstance(next_place, str):
+        place = next_place
     else:
-        place = random.choice(story[place][1][chose][1])
+        place = random.choice(next_place)
 
     with open("save.pkl", "wb") as f:
         pickle.dump([stats, place], f)

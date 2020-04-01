@@ -1,4 +1,4 @@
-inventory = []
+inventory = set()
 
 
 stats = {
@@ -14,8 +14,9 @@ story = {
             [["Půjdu do hospody", "hospoda", {}]]],
     "rvacka1": ["Perete se, ale někdo se vás pokouší uklidnit.",
                [["Nechám toho", "hospoda", {}]]],
-    "rvacka2": ["Někdo tě zabil.",
-                [["Smířím se s tím", "end", {"health": float("-inf")}]]]
+    "rvacka2": ["Vytáhli na tebe nůž.",
+                [["Nechám se zabít", "end", {"health": float("-inf")}]],
+                 ["Bodnu ho dýkou", "hospoda", {}, {"dyka"}]]
     }
 
 starts = ["hospoda", "les"]
