@@ -4,19 +4,14 @@ stats = {
     }
 
 story = {
-    "hospoda": ["Jsi v hospode, co udelas?", 
-                [["Půjdu do lesa", "les", {}],
-                 ["Začnu rvačku", ["rvacka1", "rvacka1", "rvacka1", "rvacka2"], {"health": -20, "money": 5}]]],
-    "les": ["Jsi v lese",
-            [["Půjdu do hospody", "hospoda", {}],
-             ["Projdu se", "les2", {"dyka": 1}]]],
-    "les2": ["Našel jsi dýku...",
-             [["Půjdu dál", "les", {}]]],
-    "rvacka1": ["Perete se, ale někdo se vás pokouší uklidnit.",
-                [["Nechám toho", "hospoda", {}]]],
-    "rvacka2": ["Vytáhli na tebe nůž.",
-                [["Nechám se zabít", "end", {"health": float("-inf")}],
-                 ["Bodnu ho dýkou", "hospoda", {}, {"dyka"}]]]
+    "ulice": ["Jsi na ulici", 
+              [["Půjdu na černý trh", "obchod", {}]]],
+    "obchod": ["Jsi na černém trhu.", 
+               [["Koupím si dýku za 10.", "obchod", {"dyka": 1, "money": -10}, {"money": 10}],
+                ["Prodám dýku za 7.", "obchod", {"dyka": -1, "money": 7}, {"dyka": 1}],
+                ["Koupím ledvinu za 20000.", "obchod", {"health": 50, "money": -20000}, {"money": 20000}],
+                ["Prodám ledvinu za 5000.", "obchod", {"health": -50, "money": 5000}],
+                ["Odejdu", "ulice", {}],]]
     }
 
-starts = ["hospoda", "les"]
+starts = ["ulice"]

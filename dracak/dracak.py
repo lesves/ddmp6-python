@@ -3,13 +3,30 @@ import random
 from story import stats, story, starts
 
 
+def satisfies(stats, requirements):
+    for name in requirements:
+        if name in stats:
+            if requirements[name] <= stats[name]:
+                return True
+    return False
+
+
+def missing(stats, requirements):
+    missing_items = {}
+
+    for name in requirements:
+        d = requirements[name]-stats.get(name, 0)
+        if d > 0:
+            missing_items[name] = d
+
+    return missing_items
+
+
 print("Vždy napiš číslo možnosti, jež zvolena tebou jest.")
 print("Pro zobrazení balancu tvého konta napiš money")
 
 place = random.choice(starts)
 while True:
-    inventory = set(stats.keys())
-
     if stats["health"] <= 0:
         print("Přišel jsi o všechny životy...")
         print("Hra končí.")
@@ -22,11 +39,15 @@ while True:
         if len(story[place][1][option]) > 3:
             requirements = story[place][1][option][3]
 
-            if requirements.issubset(inventory):
+            if satisfies(stats, requirements):
                 print(str(option+1) + ".", option_text)
             else:
-                print(str(option+1) + ".", option_text, 
-                    "(nelze zvolit, chybí", requirements.difference(inventory))
+                print(str(option+1) + ".", option_text)
+                print("nelze zvolit, chybí: ", end="")
+                for item, val in missing(stats, requirements).items():
+                    print(val, item, end=", ")
+                print()
+
         else:
             print(str(option+1) + ".", option_text)
 
@@ -53,7 +74,7 @@ while True:
         continue
 
     if len(story[place][1][chose]) > 3:
-        if not story[place][1][chose][3].issubset(inventory):
+        if not satisfies(stats, story[place][1][chose][3]):
             print("Nesplňuješ požadavky.")
             continue
 
@@ -76,8 +97,7 @@ while True:
     if isinstance(next_place, str):
         place = next_place
     else:
-        place = next_place[-1]
-        #place = random.choice(next_place)
+        place = random.choice(next_place)
 
     with open("save.pkl", "wb") as f:
         pickle.dump([stats, place], f)
