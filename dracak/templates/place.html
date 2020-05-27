@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>{{ place.text }}</p>
+
+<ul>
+	{% for option in place.options.all %}
+		<li><a class="option" href="{% url 'character' id=character.id %}">{{ option.text }}</a></li>
+	{% endfor %}
+</ul>
+
+{% endblock %}

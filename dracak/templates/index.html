@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for character in user.characters.all %}
+        <div class="character">
+            <a href="{% url 'character' id=character.id %}">{{ character.name }}</a>
+        </div>
+    {% endfor %}
+{% endblock %}
